@@ -1,0 +1,3313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KARV Group - Interactive Digital Experience</title>
+    
+    <!-- Chosen Palette: Maximalist Minimalism (Deep Blue, Accent Green, Off-White) -->
+    <!-- Application Structure Plan: The application is structured as a narrative journey, not a traditional corporate site. It begins with a high-impact, interactive 3D hero section to establish innovation ("The First Impression"). It then flows into an interactive services grid that guides users toward a central, "scrollytelling" process timeline ("Narrating Success"). This timeline is the core of the experience, visualizing KARV's methodology in an engaging way. It concludes with dynamic social proof and a clear call-to-action. This structure was chosen to transform passive reading into active discovery, guiding the user through a compelling story of competence and results, directly implementing the "Digital Vanguard" blueprint. -->
+    <!-- Visualization & Content Choices: 
+        - Hero Section: Report Info -> KARV's modern, complex solutions. Goal -> Create a "mouth-opening" first impression. Viz/Method -> Interactive 3D particle network. Interaction -> Mouse-based parallax. Justification -> Instantly signals technological sophistication and brand confidence. Library -> Three.js.
+        - Services Section: Report Info -> Core service offerings. Goal -> Guide users to relevant expertise. Viz/Method -> 3D-tilting cards on a grid. Interaction -> Hover reveals key stats/links. Justification -> Turns a static list into an engaging, user-driven guidance system. Library -> GSAP, CSS.
+        - Process Section: Report Info -> KARV's strategic approach. Goal -> Demystify the consulting process and build trust. Viz/Method -> Vertical "scrollytelling" timeline. Interaction -> Scroll-driven animations reveal each step sequentially. Justification -> The most effective way to narrate a complex process, making it feel transparent and methodical. Library -> GSAP (ScrollTrigger), Lottie-Player for icons.
+        - Testimonials: Report Info -> Client success stories. Goal -> Build credibility with dynamic social proof. Viz/Method -> Infinite scrolling marquee. Interaction -> Passive animation. Justification -> Creates a feeling of a large, active client base and constant success. Library -> CSS Animations.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Lato:wght@300;400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #1A237E;
+            --secondary-blue: #2196F3;
+            --accent-gold: #FFC107;
+            --light-bg: #F5F7FA;
+            --text-primary: #37474F;
+            --text-secondary: #607D8B;
+            --deep-navy: #0D1B2A;
+            --electric-blue: #00D4FF;
+            --gradient-start: #1A237E;
+            --gradient-end: #2196F3;
+            --pure-white: #ffffff;
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Lato', sans-serif;
+            --neon-glow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor, 0 0 20px var(--accent-gold);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            /* Hero section colors */
+            --deep-blue: #14213d;
+            --accent-green: #00cc9f;
+        }
+        
+        /* Global Font Configuration */
+        .font-heading { 
+            font-family: 'Montserrat', sans-serif !important; 
+            font-weight: 700 !important;
+        }
+        .font-body { 
+            font-family: 'Lato', sans-serif !important; 
+            font-weight: 400 !important;
+        }
+        
+        /* Font Visibility and Inheritance */
+        * {
+            color: inherit;
+        }
+        
+        /* Explicit font assignments for better visibility */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif !important;
+            font-weight: 700 !important;
+        }
+        
+        p, span, div, a, li, button {
+            font-family: 'Lato', sans-serif !important;
+        }
+        
+        /* Dark fonts for light background sections */
+        .text-white { color: #ffffff !important; }
+        .text-gray-300 { color: #d1d5db !important; }
+        .text-gray-400 { color: #9ca3af !important; }
+        .text-gray-200 { color: #e5e7eb !important; }
+        .text-primary-blue { color: var(--primary-blue) !important; }
+        .text-accent-gold { color: var(--accent-gold) !important; }
+        .text-secondary-blue { color: var(--secondary-blue) !important; }
+        .text-accent-green { color: var(--accent-green) !important; }
+        
+        /* Black text utilities for light backgrounds */
+        .text-dark { color: #000000 !important; }
+        .text-dark-secondary { color: #1F2937 !important; }
+        .text-dark-muted { color: #374151 !important; }
+        .text-black { color: #000000 !important; }
+        
+        /* Override for light background sections */
+        #services h1, #services h2, #services h3, #services h4, #services h5, #services h6,
+        #services p, #services span, #services div:not(.bg-gradient-to-br), #services a:not(.nav-link), #services li {
+            color: #000000 !important;
+        }
+        
+        /* Premium Animation Keyframes */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.3); }
+            100% { box-shadow: 0 0 40px rgba(255, 193, 7, 0.8), 0 0 60px rgba(255, 193, 7, 0.4); }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(60px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.8) rotate(-5deg); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1) rotate(0deg); 
+            }
+        }
+        
+        @keyframes gradient-x {
+            0%, 100% { 
+                background-size: 200% 200%;
+                background-position: left center;
+            }
+            50% { 
+                background-size: 200% 200%;
+                background-position: right center;
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        @keyframes morph {
+            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+        }
+        
+        /* Premium Glass Morphism */
+        .glass-premium {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Ultra Premium Card Styles */
+        .premium-card {
+            background: linear-gradient(145deg, rgba(26, 35, 126, 0.9), rgba(33, 150, 243, 0.8));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .premium-card:hover::before {
+            left: 100%;
+        }
+        
+        .premium-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(255, 193, 7, 0.3), 0 0 40px rgba(33, 150, 243, 0.2);
+            border-color: rgba(255, 193, 7, 0.6);
+        }
+        
+        /* Magnetic Hover Effects */
+        .magnetic-element {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* Premium Gradient Text */
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #1A237E, #2196F3, #FFC107);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient-x 3s ease infinite;
+        }
+        
+        /* Floating Elements */
+        .float-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .float-element:nth-child(2n) {
+            animation-delay: -2s;
+        }
+        
+        .float-element:nth-child(3n) {
+            animation-delay: -4s;
+        }
+        
+        /* Premium Button Styles */
+        .btn-premium {
+            background: linear-gradient(45deg, #1A237E, #2196F3);
+            color: white;
+            border: 2px solid #FFC107;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #FFC107, #FFE082);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-premium:hover::before {
+            left: 0;
+        }
+        
+        .btn-premium:hover {
+            color: #1A237E;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
+        }
+        }
+        
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--light-bg) 0%, #ffffff 100%);
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Cursor Trail Effect */
+        .cursor-trail {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, var(--accent-green) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: screen;
+            opacity: 0;
+        }
+        
+        /* Parallax Background */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 120%;
+            height: 120%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 204, 163, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(25, 57, 91, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(0, 204, 163, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: parallax-float 20s ease-in-out infinite;
+        }
+        
+        @keyframes parallax-float {
+            0%, 100% { transform: translateX(-10px) translateY(-10px) rotate(0deg); }
+            50% { transform: translateX(10px) translateY(10px) rotate(1deg); }
+        }
+        
+        .font-heading { font-family: var(--font-heading); }
+        .bg-deep-blue { background-color: var(--deep-blue); }
+        .bg-accent-green { background-color: var(--accent-green); }
+        .text-accent-green { color: var(--accent-green); }
+        
+        /* Background Color Utilities */
+        .bg-primary-blue { background-color: var(--primary-blue); }
+        .bg-secondary-blue { background-color: var(--secondary-blue); }
+        .bg-accent-gold { background-color: var(--accent-gold); }
+        .bg-light-bg { background-color: var(--light-bg); }
+        .bg-deep-navy { background-color: var(--deep-navy); }
+        
+        /* Text Color Utilities */
+        .text-primary-blue { color: var(--primary-blue); }
+        .text-secondary-blue { color: var(--secondary-blue); }
+        .text-accent-gold { color: var(--accent-gold); }
+        .text-text-primary { color: var(--text-primary); }
+        .text-text-secondary { color: var(--text-secondary); }
+        
+        /* Enhanced Hero Canvas */
+        .hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: linear-gradient(45deg, var(--deep-blue) 0%, #1a2e4f 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: hero-glow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes hero-glow {
+            0% { filter: drop-shadow(0 0 20px rgba(0, 204, 163, 0.3)); }
+            100% { filter: drop-shadow(0 0 40px rgba(0, 204, 163, 0.6)); }
+        }
+        
+        /* Magnetic Effect for Service Cards */
+        .service-card {
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.9) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(26, 35, 126, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .service-card:hover::before {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .service-card:hover {
+            transform: translateY(-20px) scale(1.05) rotateX(10deg);
+            box-shadow: 
+                0 30px 60px rgba(26, 35, 126, 0.2),
+                0 0 0 1px rgba(26, 35, 126, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Advanced Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .stagger-animation {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        
+        /* Glass Morphism Excellence */
+        .leadership-card {
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.25) 0%, 
+                rgba(255,255,255,0.1) 50%,
+                rgba(248,249,250,0.05) 100%);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .leadership-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(0, 204, 163, 0.1) 50%, 
+                transparent 100%);
+            transition: left 0.6s ease;
+        }
+        
+        .leadership-card:hover::before {
+            left: 100%;
+        }
+        
+        .leadership-card:hover {
+            transform: translateY(-15px) scale(1.05) rotateY(8deg);
+            box-shadow: 
+                0 25px 50px rgba(0, 204, 163, 0.3),
+                0 0 0 1px rgba(0, 204, 163, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(0, 204, 163, 0.4);
+        }
+        
+        /* Premium Value Cards */
+        .value-card {
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-left: 4px solid transparent;
+            padding: 2.5rem;
+            border-radius: 20px;
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.15) 0%, 
+                rgba(20, 184, 166, 0.1) 50%,
+                rgba(6, 182, 212, 0.05) 100%);
+            backdrop-filter: blur(25px);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .value-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, rgb(16, 185, 129), rgb(20, 184, 166));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .value-card:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .value-card:hover {
+            border-left-color: rgb(16, 185, 129);
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.2) 0%, 
+                rgba(20, 184, 166, 0.15) 50%,
+                rgba(6, 182, 212, 0.1) 100%);
+            transform: translateX(15px) translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 25px 50px rgba(16, 185, 129, 0.3),
+                0 0 0 1px rgba(16, 185, 129, 0.3);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Quantum Floating Effect */
+        .floating-element {
+            animation: quantum-float 10s ease-in-out infinite;
+        }
+        
+        @keyframes quantum-float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg) scale(1); 
+                filter: hue-rotate(0deg);
+            }
+            25% { 
+                transform: translateY(-10px) rotate(2deg) scale(1.02); 
+                filter: hue-rotate(90deg);
+            }
+            50% { 
+                transform: translateY(-5px) rotate(-1deg) scale(0.98); 
+                filter: hue-rotate(180deg);
+            }
+            75% { 
+                transform: translateY(-15px) rotate(1deg) scale(1.01); 
+                filter: hue-rotate(270deg);
+            }
+        }
+        
+        /* Epic Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, 
+                var(--primary-blue) 0%, 
+                var(--accent-green) 25%,
+                var(--primary-blue) 50%,
+                var(--accent-green) 75%,
+                var(--primary-blue) 100%);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: epic-gradient 6s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .gradient-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-green), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: text-glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes epic-gradient {
+            0%, 100% { 
+                background-position: 0% 50%; 
+                filter: drop-shadow(0 0 20px rgba(0, 204, 163, 0.3));
+            }
+            50% { 
+                background-position: 100% 50%; 
+                filter: drop-shadow(0 0 30px rgba(25, 57, 91, 0.4));
+            }
+        }
+        
+        @keyframes text-glow {
+            0% { opacity: 0; }
+            100% { opacity: 0.3; }
+        }
+        
+        /* Magnificent Section Divider */
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--accent-green) 10%,
+                var(--primary-blue) 30%,
+                var(--accent-green) 50%,
+                var(--primary-blue) 70%,
+                var(--accent-green) 90%,
+                transparent 100%);
+            margin: 4rem 0;
+            border-radius: 3px;
+            box-shadow: 
+                0 0 20px rgba(0, 204, 163, 0.4),
+                0 0 40px rgba(0, 204, 163, 0.2),
+                0 0 60px rgba(0, 204, 163, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.8) 50%, 
+                transparent 100%);
+            animation: divider-shine 3s ease-in-out infinite;
+        }
+        
+        @keyframes divider-shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Glass Morphism Sections */
+        .enhanced-section {
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.15) 0%, 
+                rgba(248,249,250,0.1) 50%,
+                rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        
+        .enhanced-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 204, 163, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        /* Avatar Magic */
+        .avatar-circle {
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--primary-blue) 100%);
+            box-shadow: 
+                0 10px 40px rgba(0, 204, 163, 0.4),
+                0 0 0 4px rgba(255, 255, 255, 0.1),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .avatar-circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, 
+                transparent 0deg, 
+                rgba(255, 255, 255, 0.3) 60deg, 
+                transparent 120deg);
+            animation: avatar-spin 4s linear infinite;
+        }
+        
+        @keyframes avatar-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .avatar-circle:hover {
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 
+                0 15px 60px rgba(0, 204, 163, 0.6),
+                0 0 0 6px rgba(255, 255, 255, 0.2),
+                0 0 100px rgba(0, 204, 163, 0.3);
+        }
+        
+        /* Leadership Title Magic */
+        .leadership-title {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .leadership-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                var(--accent-green), 
+                rgba(255, 255, 255, 0.8), 
+                var(--primary-blue));
+            transition: left 0.4s ease;
+            box-shadow: 0 0 10px rgba(0, 204, 163, 0.5);
+        }
+        
+        .leadership-card:hover .leadership-title::after {
+            left: 0;
+        }
+        
+        /* Premium Value Icons */
+        .value-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgb(16, 185, 129) 0%, rgb(20, 184, 166) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 
+                0 10px 40px rgba(16, 185, 129, 0.4),
+                0 0 0 3px rgba(255, 255, 255, 0.1),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .value-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .value-card:hover .value-icon::before {
+            opacity: 1;
+            animation: icon-pulse 0.6s ease-out;
+        }
+        
+        @keyframes icon-pulse {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .value-card:hover .value-icon {
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 
+                0 15px 60px rgba(16, 185, 129, 0.6),
+                0 0 0 5px rgba(255, 255, 255, 0.2),
+                0 0 100px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Enhanced Process Section */
+        .process-section {
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.95) 0%, 
+                rgba(30, 41, 59, 0.9) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .process-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 10%, rgba(34, 197, 94, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 40%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            animation: background-drift 30s ease-in-out infinite;
+        }
+        
+        @keyframes background-drift {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+            33% { transform: translateX(20px) translateY(-10px) rotate(1deg); }
+            66% { transform: translateX(-10px) translateY(20px) rotate(-1deg); }
+        }
+        
+        /* Testimonial Enhancements */
+        .testimonial-marquee-inner {
+            animation: epic-marquee 60s linear infinite;
+        }
+        
+        @keyframes epic-marquee {
+            from { transform: translateX(0%); }
+            to { transform: translateX(-50%); }
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.9) 0%, 
+                rgba(248, 249, 250, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 204, 163, 0.2);
+        }
+        
+        /* Scroll Indicators */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-green), var(--primary-blue));
+            transform-origin: left;
+            transform: scaleX(0);
+            z-index: 1000;
+        }
+        
+        /* Magnetic Button Effect */
+        .magnetic-btn {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .magnetic-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            transition: all 0.4s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .magnetic-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .magnetic-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 15px 30px rgba(0, 204, 163, 0.4),
+                0 0 50px rgba(0, 204, 163, 0.2);
+        }
+        
+        /* Enhanced animations for new sections */
+        .premium-testimonial-card {
+            position: relative;
+            transition: all 0.5s ease;
+        }
+        
+        .premium-testimonial-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+        
+        .testimonial-float-card {
+            animation: testimonial-float 6s ease-in-out infinite;
+            animation-delay: calc(var(--delay, 0) * 0.5s);
+        }
+        
+        @keyframes testimonial-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(1deg); }
+            66% { transform: translateY(-5px) rotate(-1deg); }
+        }
+        
+        .testimonial-slider {
+            animation: testimonial-slide 25s linear infinite;
+        }
+        
+        @keyframes testimonial-slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .growth-philosophy-card {
+            transition: all 0.5s ease;
+        }
+        
+        .growth-philosophy-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .growth-step {
+            opacity: 0;
+            animation: step-reveal 1s ease forwards;
+            animation-delay: calc(var(--step, 1) * 0.3s);
+        }
+        
+        @keyframes step-reveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .contact-info-card {
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Background Drift Pattern */
+        .bg-drift-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+            animation: drift-pattern 20s ease-in-out infinite;
+        }
+        
+        /* Mobile Menu Animations */
+        #mobile-menu {
+            transition: all 0.3s ease;
+        }
+        
+        /* Enhanced Responsiveness */
+        @media (max-width: 768px) {
+            .growth-philosophy-card .relative {
+                padding: 1.5rem;
+            }
+            
+            .growth-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .growth-step .w-5/12 {
+                width: 100%;
+                padding: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .testimonial-float-card .w-80 {
+                width: 16rem;
+            }
+            
+            .premium-testimonial-card .relative {
+                padding: 2rem;
+            }
+        }
+        
+        /* Navbar Active State */
+        .nav-link.active {
+            color: var(--accent-gold) !important;
+            opacity: 1 !important;
+            background: rgba(255, 193, 7, 0.1);
+        }
+        
+        @keyframes drift-pattern {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(20px) translateY(10px); }
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.25) 0%, 
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(248,249,250,0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .quantum-text {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quantum-container {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .epic-title {
+            position: relative;
+            text-shadow: 0 0 30px rgba(0, 204, 163, 0.5);
+        }
+        
+        .floating-text {
+            animation: gentle-float 6s ease-in-out infinite;
+        }
+        
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .floating-quote {
+            animation: quote-float 8s ease-in-out infinite;
+        }
+        
+        @keyframes quote-float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-3px) scale(1.01); }
+        }
+        
+        .glow-text {
+            text-shadow: 
+                0 0 10px rgba(0, 204, 163, 0.5),
+                0 0 20px rgba(0, 204, 163, 0.3),
+                0 0 30px rgba(0, 204, 163, 0.1);
+        }
+        
+        .hover-glow {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-glow:hover {
+            box-shadow: 0 15px 35px rgba(0, 204, 163, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .quantum-button {
+            position: relative;
+            overflow: hidden;
+            animation: quantum-pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes quantum-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 204, 163, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(0, 204, 163, 0.8); }
+        }
+        
+        .quantum-marquee {
+            will-change: transform;
+        }
+        
+        .avatar-magic {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .avatar-magic:hover {
+            filter: brightness(1.1) saturate(1.2);
+        }
+        
+        .premium-value-icon {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .reveal-on-scroll.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Enhanced animations for new sections */
+        .premium-testimonial-card {
+            position: relative;
+            transition: all 0.5s ease;
+        }
+        
+        .premium-testimonial-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+        
+        .testimonial-float-card {
+            animation: testimonial-float 6s ease-in-out infinite;
+        }
+        
+        @keyframes testimonial-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(1deg); }
+            66% { transform: translateY(-5px) rotate(-1deg); }
+        }
+        
+        .testimonial-slider {
+            animation: testimonial-slide 25s linear infinite;
+        }
+        
+        @keyframes testimonial-slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .growth-philosophy-card {
+            transition: all 0.5s ease;
+        }
+        
+        .growth-philosophy-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .growth-step {
+            opacity: 0;
+            animation: step-reveal 1s ease forwards;
+        }
+        
+        .growth-step[data-step="1"] { animation-delay: 0.5s; }
+        .growth-step[data-step="2"] { animation-delay: 0.8s; }
+        .growth-step[data-step="3"] { animation-delay: 1.1s; }
+        .growth-step[data-step="4"] { animation-delay: 1.4s; }
+        
+        @keyframes step-reveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .contact-info-card {
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info-card:hover {
+            transform: translateY(-5px);
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Parallax Background -->
+    <div class="parallax-bg"></div>
+    
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <!-- Cursor Trail Elements -->
+    <div class="cursor-trail" id="cursorTrail1"></div>
+    <div class="cursor-trail" id="cursorTrail2"></div>
+    <div class="cursor-trail" id="cursorTrail3"></div>
+
+    <div id="page-container" class="w-full">
+
+        <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4 bg-gradient-to-r from-primary-blue/95 to-secondary-blue/95 backdrop-blur-md border-b border-accent-gold/20">
+            <div class="container mx-auto px-6 flex justify-between items-center">
+                <div class="text-white">
+                    <a href="#home" class="font-heading text-2xl font-black text-white hover:text-accent-gold transition-colors duration-300">KARV Group</a>
+                    <div class="text-xs opacity-80 tracking-wide font-body">Port Operations | Freight Forwarding | Critical Minerals</div>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#home" class="nav-link font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold px-4 py-2 rounded-lg hover:bg-white/10">Home</a>
+                    <a href="#about" class="nav-link font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold px-4 py-2 rounded-lg hover:bg-white/10">About Us</a>
+                    <a href="#services" class="nav-link font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold px-4 py-2 rounded-lg hover:bg-white/10">Services</a>
+                    <a href="#karv-meaning" class="nav-link font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold px-4 py-2 rounded-lg hover:bg-white/10">KARV Meaning</a>
+                    <a href="#testimonials" class="nav-link font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold px-4 py-2 rounded-lg hover:bg-white/10">Success Stories</a>
+                    <a href="#contact" class="bg-gradient-to-r from-accent-gold to-yellow-500 text-white font-bold py-3 px-6 rounded-full hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl font-body">Contact Us</a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div class="md:hidden bg-gradient-to-br from-primary-blue/95 to-secondary-blue/95 backdrop-blur-lg border-t border-accent-gold/20 hidden" id="mobile-menu">
+                <div class="container mx-auto px-6 py-4 space-y-4">
+                    <a href="#home" class="nav-link block font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold py-2">Home</a>
+                    <a href="#about" class="nav-link block font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold py-2">About Us</a>
+                    <a href="#services" class="nav-link block font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold py-2">Services</a>
+                    <a href="#karv-meaning" class="nav-link block font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold py-2">KARV Meaning</a>
+                    <a href="#testimonials" class="nav-link block font-body text-white font-semibold opacity-80 hover:opacity-100 transition-all duration-300 hover:text-accent-gold py-2">Success Stories</a>
+                    <a href="#contact" class="block bg-gradient-to-r from-accent-gold to-yellow-500 text-white font-bold py-3 px-6 rounded-full text-center mt-4 font-body">Contact Us</a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="home" class="relative h-screen w-full flex items-center justify-center bg-deep-blue overflow-hidden">
+                <canvas id="hero-canvas" class="hero-canvas"></canvas>
+                <div class="hero-content text-center text-white px-4">
+                    <div class="mb-6 text-xl md:text-2xl opacity-90">
+                        <span class="clip-reveal">Excellence in Motion Since 2024</span>
+                    </div>
+                    <h1 class="font-heading font-black text-5xl md:text-8xl uppercase tracking-tighter">
+                        <span class="clip-reveal">KARV Group of Companies</span>
+                    </h1>
+                    <h2 class="mt-4 text-2xl md:text-4xl font-normal opacity-90">
+                        <span class="clip-reveal">Crafting your Growth CURVE</span>
+                    </h2>
+                    <p class="mt-6 max-w-2xl mx-auto text-lg md:text-xl opacity-80 clip-reveal">
+                        Navigating Growth Through Expertise in Ports, Logistics, Freight Forwarding and Critical Minerals value chain
+                    </p>
+                    <p class="mt-4 max-w-3xl mx-auto text-base md:text-lg opacity-75 clip-reveal">
+                        Your trusted partner in delivering transformative solutions across ports, logistics and warehousing, along with services of winning contracts in sector of critical minerals and rare earth value chain.
+                    </p>
+                </div>
+            </section>
+
+            <section id="services" class="py-20 md:py-32 bg-light-bg relative overflow-hidden">
+                <!-- Premium background elements -->
+                <div class="absolute top-0 left-0 w-full h-full opacity-10">
+                    <div class="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-full blur-3xl"></div>
+                    <div class="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-br from-accent-gold to-orange-400 rounded-full blur-3xl"></div>
+                </div>
+                
+                <div class="container mx-auto px-6 relative z-10">
+                    <div class="text-center mb-16">
+                        <h2 class="font-heading text-4xl md:text-5xl font-black text-black">Premium Solutions</h2>
+                        <p class="mt-4 text-lg text-black max-w-3xl mx-auto font-body">Comprehensive services tailored to drive your growth curve in logistics and critical minerals</p>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-8 perspective-[1000px]">
+                        <div class="service-card glass-premium rounded-3xl p-8 magnetic-element bg-white border border-gray-200" data-magnetic>
+                            <div class="mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-2xl flex items-center justify-center text-white text-3xl font-bold floating-element shadow-lg">⚓</div>
+                            </div>
+                            <h3 class="font-heading text-2xl font-black mb-4 text-black">Port Consulting</h3>
+                            <p class="text-black leading-relaxed font-body">Comprehensive port consulting services including logistics feasibility studies, operational optimization, and strategic planning of EXIM logistics services for port development and operations. Logistics feasibility studies and market analysis.</p>
+                            <div class="mt-6 h-1 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-full"></div>
+                        </div>
+                        <div class="service-card glass-premium rounded-3xl p-8 magnetic-element bg-white border border-gray-200" data-magnetic>
+                           <div class="mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-2xl flex items-center justify-center text-white text-3xl font-bold floating-element shadow-lg">🚛</div>
+                            </div>
+                            <h3 class="font-heading text-2xl font-black mb-4 text-black">Freight Forwarding</h3>
+                            <p class="text-black leading-relaxed font-body">Global freight forwarding services with expertise in multimodal transport, customs clearance, and comprehensive logistics coordination.</p>
+                            <div class="mt-6 h-1 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-full"></div>
+                        </div>
+                        <div class="service-card glass-premium rounded-3xl p-8 magnetic-element bg-white border border-gray-200" data-magnetic>
+                            <div class="mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-2xl flex items-center justify-center text-white text-3xl font-bold floating-element shadow-lg">⚛️</div>
+                            </div>
+                            <h3 class="font-heading text-2xl font-black mb-4 text-black">Critical Minerals & REPM</h3>
+                            <p class="text-black leading-relaxed font-body">Specialized consulting in critical minerals and rare earth value chain, focusing on strategic partnerships for EV sector, Defence and industrial applications.</p>
+                            <div class="mt-6 h-1 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-full"></div>
+                        </div>
+                        <div class="service-card glass-premium rounded-3xl p-8 magnetic-element bg-white border border-gray-200" data-magnetic>
+                            <div class="mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-2xl flex items-center justify-center text-white text-3xl font-bold floating-element shadow-lg">🚀</div>
+                            </div>
+                            <h3 class="font-heading text-2xl font-black mb-4 text-black">Business Development</h3>
+                            <p class="text-black leading-relaxed font-body">Strategic business development services including venture building, feasibility studies, and partnership facilitation for sustainable growth.</p>
+                            <div class="mt-6 h-1 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-full"></div>
+                        </div>
+                        <div class="service-card glass-premium rounded-3xl p-8 magnetic-element bg-white border border-gray-200" data-magnetic>
+                            <div class="mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-2xl flex items-center justify-center text-white text-3xl font-bold floating-element shadow-lg">⚙️</div>
+                            </div>
+                            <h3 class="font-heading text-2xl font-black mb-4 text-black">Logistics Consulting</h3>
+                            <p class="text-black leading-relaxed font-body">End-to-end logistics consulting services focused on supply chain optimization, warehousing solutions, and operational excellence.</p>
+                            <div class="mt-6 h-1 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-full"></div>
+                        </div>
+                        <div class="service-card glass-premium rounded-3xl p-8 magnetic-element bg-white border border-gray-200" data-magnetic>
+                            <div class="mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-2xl flex items-center justify-center text-white text-3xl font-bold floating-element shadow-lg">📍</div>
+                            </div>
+                            <h3 class="font-heading text-2xl font-black mb-4 text-black">Strategic Site Selection</h3>
+                            <p class="text-black leading-relaxed font-body">Comprehensive site selection services combining industry requirements with logistics advantages for optimal long-term benefits.</p>
+                            <div class="mt-6 h-1 bg-gradient-to-r from-primary-blue to-secondary-blue rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- Industries Served -->
+                    <div class="bg-gradient-to-br from-primary-blue via-secondary-blue to-deep-navy text-white p-10 rounded-3xl mt-16">
+                        <h3 class="text-center text-2xl font-bold mb-8 text-accent-gold">Industries We Serve</h3>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                            <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
+                                <h4 class="text-accent-gold font-semibold mb-2">FRM & Strategic Minerals</h4>
+                                <p class="text-sm opacity-90">Fertilizer, Raw Materials and Strategic mineral consulting</p>
+                            </div>
+                            <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
+                                <h4 class="text-accent-gold font-semibold mb-2">Rare Earth Elements</h4>
+                                <p class="text-sm opacity-90">Critical minerals and REPM value chain</p>
+                            </div>
+                            <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
+                                <h4 class="text-accent-gold font-semibold mb-2">Manufacturing & Industrial</h4>
+                                <p class="text-sm opacity-90">Industrial logistics and supply chain optimization</p>
+                            </div>
+                            <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
+                                <h4 class="text-accent-gold font-semibold mb-2">Port & Maritime</h4>
+                                <p class="text-sm opacity-90">Port operations and maritime logistics</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Us Section -->
+            <section id="about" class="py-20 md:py-32 bg-white">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="font-heading text-4xl md:text-5xl font-black text-black mb-4">About Us</h2>
+                        <p class="text-lg text-black max-w-3xl mx-auto font-body">
+                            KARV Group of Companies - Your trusted partner in carving pathways to sustainable growth through innovative solutions in logistics and critical minerals.
+                        </p>
+                    </div>
+
+                    <!-- Company Entities -->
+                    <div class="grid md:grid-cols-2 gap-8 mb-16">
+                        <!-- KARV Enterprises -->
+                        <div class="bg-gradient-to-br from-blue-50 to-white p-8 rounded-3xl border-2 border-primary-blue shadow-lg">
+                            <div class="text-center mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-primary-blue mb-2">KARV Enterprises</h3>
+                                <h4 class="text-lg font-semibold text-accent-gold">Maritime Excellence</h4>
+                            </div>
+                            <p class="text-black leading-relaxed mb-6 text-center">
+                                Operational excellence in port operations, freight forwarding, and logistics solutions with comprehensive warehousing and supply chain management.
+                            </p>
+                            <div class="bg-blue-100 p-4 rounded-xl text-center">
+                                <p class="text-sm text-black mb-1"><strong>Founder & Owner:</strong> Ruchita Gautam</p>
+                                <p class="text-sm text-black"><strong>Management Lead:</strong> Amit Gautam</p>
+                            </div>
+                        </div>
+
+                        <!-- KARV Consultancy Services -->
+                        <div class="bg-gradient-to-br from-yellow-50 to-white p-8 rounded-3xl border-2 border-accent-gold shadow-lg">
+                            <div class="text-center mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-accent-gold to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-accent-gold mb-2">KARV Consultancy Services</h3>
+                                <h4 class="text-lg font-semibold text-primary-blue">Future Materials</h4>
+                            </div>
+                            <p class="text-black leading-relaxed mb-6 text-center">
+                                Strategic consulting specializing in critical minerals, rare earth permanent magnets, and government contract acquisition with downstream value chain expertise.
+                            </p>
+                            <div class="space-y-2">
+                                <div class="bg-yellow-100 p-3 rounded-lg text-center">
+                                    <span class="text-sm font-medium text-black">Research Reports</span>
+                                </div>
+                                <div class="bg-yellow-100 p-3 rounded-lg text-center">
+                                    <span class="text-sm font-medium text-black">Strategic Partnership</span>
+                                </div>
+                                <div class="bg-yellow-100 p-3 rounded-lg text-center">
+                                    <span class="text-sm font-medium text-black">Successful Participation in Bids</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Synergistic Excellence -->
+                    <div class="bg-white p-10 rounded-3xl text-center mb-16 shadow-lg border border-gray-200">
+                        <h3 class="text-3xl font-bold text-primary-blue mb-6">Synergistic Excellence</h3>
+                        <p class="text-lg text-black leading-relaxed max-w-4xl mx-auto">
+                            Both companies complement each other in its purpose to guide and empower clients toward their <strong class="text-accent-gold">"Growth CURVE,"</strong> leveraging 3 E's <strong>Experience, Expertise and Execution</strong> to
+                            deliver transformative results in logistics, cost optimization, minerals, and rare earth magnet value chain.
+                        </p>
+                    </div>
+
+                    <!-- Industry Leadership & Excellence -->
+                    <div class="bg-gradient-to-br from-blue-50 to-white p-10 rounded-3xl mb-16 shadow-lg">
+                        <h3 class="text-3xl font-bold text-primary-blue mb-8 text-center">Industry Leadership & Excellence</h3>
+                        <div class="text-black leading-relaxed space-y-6">
+                            <p class="text-lg">
+                                Founded by Amit Gautam, KARV Group leverages 27 years of techno-commercial expertise to secure high-value contracts and foster strategic partnerships.
+                            </p>
+                            <div>
+                                <p class="mb-4"><strong class="text-primary-blue">Network:</strong> Robust network and proven track record in securing high-value contracts across Indian and global markets</p>
+                                <p class="mb-4">Led by Amit's extensive experience gained with industry giants like Adani Group, Aditya Birla Group, and Essar Oil.</p>
+                            </div>
+                            <p>
+                                Our expertise fosters business growth and expansion, provides strategic consultancy and expertly navigating complex regulatory landscapes in the domain of Port operations and Critical Minerals.
+                            </p>
+                            <p>
+                                Expertise in creating new business streams, securing government contracts, and tapping downstream potential in the critical minerals value chain.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Leadership Excellence Section -->
+                    <div class="bg-white p-10 rounded-3xl border border-gray-200 mb-16 shadow-lg">
+                        <h3 class="text-2xl font-bold text-center mb-8 text-black">Leadership Excellence</h3>
+                        <div class="grid md:grid-cols-3 gap-8 items-center">
+                            <div class="text-center">
+                                <div class="w-40 h-40 rounded-full overflow-hidden mx-auto mb-4 border-4 border-primary-blue shadow-xl">
+                                    <img src="amit.jpg" alt="Amit Gautam - Founder & Owner" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="text-xl font-semibold text-black mb-2">Amit Gautam</h4>
+                                <p class="text-primary-blue font-medium mb-4">Founder & Owner</p>
+                                <div class="bg-blue-50 p-3 rounded-xl">
+                                    <p class="text-sm text-primary-blue">
+                                        <i class="fas fa-envelope mr-2"></i> amitgautam@karv-group.com
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-orange-400 mb-6">
+                                    <blockquote class="text-lg italic text-black mb-4 leading-relaxed">
+                                        "Driving growth and creating sustainable solutions in logistics and supply chain is my passion."
+                                    </blockquote>
+                                    <p class="text-orange-600 font-medium">— Amit Gautam, Founder</p>
+                                </div>
+                                <div class="bg-orange-50 p-6 rounded-xl mb-6">
+                                    <h5 class="text-orange-600 font-semibold mb-2">Network</h5>
+                                    <p class="text-gray-700 text-sm leading-relaxed">
+                                        Robust network and proven track record in securing high-value contracts across Indian and global markets
+                                    </p>
+                                </div>
+                                <div class="bg-black text-white p-6 rounded-xl">
+                                    <h5 class="text-yellow-400 font-semibold text-lg mb-3">27 Years of Industry Excellence</h5>
+                                    <p class="leading-relaxed">
+                                        Amit has handled more than <strong>1000 stakeholders</strong> in the domain of Port, Logistics, Project Cargo Logistics, SEZ, Fertilizer, and Mining industry.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Core Values: GRIP -->
+                    <div class="bg-white p-10 rounded-3xl mb-16 shadow-lg">
+                        <h3 class="text-3xl font-bold text-primary-blue mb-8 text-center">Our Core Values: GRIP</h3>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-white font-bold text-2xl">G</span>
+                                </div>
+                                <h4 class="text-xl font-semibold text-primary-blue mb-3">Growth</h4>
+                                <p class="text-black text-sm leading-relaxed">Driving measurable, sustainable progress for clients.</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-white font-bold text-2xl">R</span>
+                                </div>
+                                <h4 class="text-xl font-semibold text-primary-blue mb-3">Reliability & Integrity</h4>
+                                <p class="text-black text-sm leading-relaxed">Ensuring seamless execution, accountability and fostering long term partnerships built on ethics and trust.</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-white font-bold text-2xl">I</span>
+                                </div>
+                                <h4 class="text-xl font-semibold text-primary-blue mb-3">Innovation</h4>
+                                <p class="text-black text-sm leading-relaxed">Pioneering strategies in niche, high-impact sectors like rare earth magnets.</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-primary-blue to-secondary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-white font-bold text-2xl">P</span>
+                                </div>
+                                <h4 class="text-xl font-semibold text-primary-blue mb-3">Precision & Excellence</h4>
+                                <p class="text-black text-sm leading-relaxed">Crafting precise solutions for complex challenges in logistics, Port operations, Critical minerals, and rare earth Value Chain.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Core Strengths -->
+                    <div class="bg-gray-50 p-10 rounded-3xl">
+                        <h3 class="text-2xl font-bold text-center mb-8 text-primary-blue">Our Core Strengths</h3>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="text-center">
+                                <h4 class="text-lg font-semibold text-primary-blue mb-3">Expertise and Experience</h4>
+                                <p class="text-black text-sm leading-relaxed">Deep understanding of industry dynamics, trends, and best practices, combined with years of hands-on experience in solving complex challenges.</p>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="text-lg font-semibold text-primary-blue mb-3">Strategic Insight</h4>
+                                <p class="text-black text-sm leading-relaxed">The ability to provide data-driven, forward-thinking strategies tailored to client needs.</p>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="text-lg font-semibold text-primary-blue mb-3">Innovative Problem-Solving</h4>
+                                <p class="text-black text-sm leading-relaxed">Employing creativity and innovation to address unique business challenges with effective solutions.</p>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="text-lg font-semibold text-primary-blue mb-3">End-to-End Solutions</h4>
+                                <p class="text-black text-sm leading-relaxed">Providing comprehensive support across planning, implementation, and optimization phases.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KARV Meaning Section -->
+            <section id="karv-meaning" class="py-20 md:py-32 bg-gradient-to-br from-primary-blue via-secondary-blue to-deep-navy text-white overflow-hidden relative">
+                <!-- Background decoration -->
+                <div class="absolute top-0 left-0 w-full h-full opacity-10">
+                    <div class="absolute top-10 right-10 w-80 h-80 bg-gradient-to-br from-accent-gold to-orange-400 rounded-full blur-3xl"></div>
+                    <div class="absolute bottom-10 left-10 w-96 h-96 bg-gradient-to-br from-blue-400 to-cyan-300 rounded-full blur-3xl"></div>
+                </div>
+
+                <div class="container mx-auto px-6 relative z-10">
+                    <div class="text-center mb-16">
+                        <h2 class="font-heading text-4xl md:text-5xl font-black text-black mb-6">What Does KARV Mean?</h2>
+                        <p class="text-xl text-black max-w-4xl mx-auto leading-relaxed">
+                            KARV represents more than a name—it embodies our commitment to carving pathways for our clients' sustainable growth.
+                        </p>
+                    </div>
+
+                    <!-- KARV Definition -->
+                    <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-12 mb-16 border border-white/20">
+                            <div class="text-center mb-12">
+                                <h3 class="text-3xl font-bold text-black mb-6">The KARV Philosophy</h3>
+                                <div class="text-6xl font-bold text-black mb-6 tracking-wider">K.A.R.V</div>
+                                <p class="text-2xl text-black font-light italic">
+                                    "To <span class="text-accent-gold font-semibold">CARVE</span> pathways for sustainable growth"
+                                </p>
+                            </div>                        <div class="grid md:grid-cols-2 gap-12 items-center">
+                            <div>
+                                <h4 class="text-2xl font-semibold text-black mb-6">Our Mission</h4>
+                                <p class="text-lg text-black leading-relaxed mb-6">
+                                    At KARV Group, we believe in <strong class="text-black">carving unique pathways</strong> that lead our clients toward their 
+                                    <strong class="text-accent-gold">"Growth CURVE."</strong> Every strategy we craft, every solution we implement, 
+                                    is designed to sculpt a sustainable path forward.
+                                </p>
+                                <p class="text-lg text-black leading-relaxed">
+                                    Just as an artist carves stone to reveal a masterpiece, we carve through challenges, 
+                                    complexities, and market dynamics to reveal your organization's true potential.
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-80 h-80 mx-auto relative">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-accent-gold/50 to-orange-400/50 rounded-full animate-pulse"></div>
+                                    <div class="absolute inset-4 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm border-2 border-accent-gold">
+                                        <div class="text-center">
+                                            <div class="text-4xl mb-4">⚡</div>
+                                            <h5 class="text-2xl font-bold text-primary-blue mb-2">Growth CURVE</h5>
+                                            <p class="text-sm text-black px-4">
+                                                Carving pathways to sustainable success
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Growth CURVE Explanation -->
+                    <div class="bg-white text-black p-12 rounded-3xl mb-16 shadow-2xl">
+                        <h3 class="text-3xl font-bold text-primary-blue mb-8 text-center">Understanding Your Growth CURVE</h3>
+                        <div class="grid md:grid-cols-2 gap-12 items-center">
+                            <div>
+                                <h4 class="text-2xl font-semibold text-accent-gold mb-6">The CURVE Methodology</h4>
+                                <div class="space-y-6">
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-12 h-12 bg-primary-blue rounded-full flex items-center justify-center text-white font-bold text-xl">C</div>
+                                        <div>
+                                            <h5 class="text-lg font-semibold text-black">Comprehensive Analysis</h5>
+                                            <p class="text-black">Deep understanding of your current position and market dynamics</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-12 h-12 bg-primary-blue rounded-full flex items-center justify-center text-white font-bold text-xl">U</div>
+                                        <div>
+                                            <h5 class="text-lg font-semibold text-black">Unique Strategy Development</h5>
+                                            <p class="text-black">Tailored solutions that fit your specific needs and goals</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-12 h-12 bg-primary-blue rounded-full flex items-center justify-center text-white font-bold text-xl">R</div>
+                                        <div>
+                                            <h5 class="text-lg font-semibold text-black">Results-Driven Implementation</h5>
+                                            <p class="text-black">Focused execution with measurable outcomes</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-12 h-12 bg-primary-blue rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
+                                        <div>
+                                            <h5 class="text-lg font-semibold text-black">Value Creation</h5>
+                                            <p class="text-black">Sustainable value addition for long-term success</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-4">
+                                        <div class="w-12 h-12 bg-primary-blue rounded-full flex items-center justify-center text-white font-bold text-xl">E</div>
+                                        <div>
+                                            <h5 class="text-lg font-semibold text-black">Excellence in Execution</h5>
+                                            <p class="text-black">Maintaining highest standards throughout the journey</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-gradient-to-br from-primary-blue to-secondary-blue p-8 rounded-3xl text-white">
+                                    <h5 class="text-2xl font-bold text-accent-gold mb-4">Your Growth Journey</h5>
+                                    <p class="text-lg leading-relaxed mb-6 text-black">
+                                        Every organization has its unique growth trajectory. We don't just follow 
+                                        standard pathways—we carve new ones that are specifically designed for 
+                                        your success.
+                                    </p>
+                                    <div class="bg-white/20 p-6 rounded-xl backdrop-blur-sm">
+                                        <h6 class="text-accent-gold font-semibold mb-2">Our Promise</h6>
+                                        <p class="text-sm text-black">
+                                            To be your trusted partner in carving pathways that lead to 
+                                            sustainable growth, operational excellence, and market leadership.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Why Choose KARV -->
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20 text-center">
+                            <div class="w-16 h-16 bg-accent-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                                <span class="text-2xl">🎯</span>
+                            </div>
+                            <h4 class="text-xl font-semibold text-black mb-4">Precision-Driven</h4>
+                            <p class="text-black leading-relaxed">
+                                Every solution is precisely carved to fit your unique business landscape and growth objectives.
+                            </p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20 text-center">
+                            <div class="w-16 h-16 bg-accent-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                                <span class="text-2xl">🚀</span>
+                            </div>
+                            <h4 class="text-xl font-semibold text-black mb-4">Future-Focused</h4>
+                            <p class="text-black leading-relaxed">
+                                We carve pathways that not only address today's challenges but position you for tomorrow's opportunities.
+                            </p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20 text-center">
+                            <div class="w-16 h-16 bg-accent-gold rounded-full flex items-center justify-center mx-auto mb-6">
+                                <span class="text-2xl">🤝</span>
+                            </div>
+                            <h4 class="text-xl font-semibold text-black mb-4">Partnership-Oriented</h4>
+                            <p class="text-black leading-relaxed">
+                                We don't just provide services—we carve lasting partnerships that grow stronger with your success.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="process" class="py-20 md:py-32 process-section relative overflow-hidden">
+                <!-- Modern gradient background with emerald and teal -->
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-900 via-teal-800 to-cyan-900"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/60 to-transparent"></div>
+                
+                <!-- Animated background elements -->
+                <div class="absolute top-0 left-0 w-full h-full opacity-25">
+                    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-400 rounded-full blur-3xl animate-pulse"></div>
+                    <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-cyan-400 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+                </div>
+                
+                <div class="container mx-auto px-6 relative z-10">
+                    <!-- Crafting Your Growth Curve Section -->
+                    <div class="text-center mb-32">
+                        <div class="motion-section" data-motion="fade-up">
+                            <h2 class="font-heading text-4xl md:text-6xl font-black mb-12 bg-gradient-to-r from-emerald-300 via-cyan-200 to-teal-100 bg-clip-text text-transparent">
+                                Crafting Your Growth Curve
+                            </h2>
+                            <div class="w-32 h-1 mx-auto bg-gradient-to-r from-emerald-400 via-cyan-400 to-teal-300 rounded-full shadow-lg shadow-emerald-400/50"></div>
+                        </div>
+                        
+                        <!-- Interactive Growth Journey -->
+                        <div class="mt-20 max-w-7xl mx-auto">
+                            <!-- Growth Philosophy Cards -->
+                            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                                <div class="growth-philosophy-card motion-section" data-motion="scale-up" data-delay="0">
+                                    <div class="relative bg-gradient-to-br from-emerald-500/20 to-teal-600/10 backdrop-blur-xl rounded-3xl p-8 border border-emerald-400/30 hover:border-emerald-300/60 transition-all duration-500 group">
+                                        <div class="absolute top-4 right-4 w-12 h-12 bg-emerald-400/30 rounded-full flex items-center justify-center text-emerald-300 text-xl font-bold">
+                                            📈
+                                        </div>
+                                        <div class="mb-6">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-4 group-hover:scale-110 transition-transform duration-300">
+                                                K
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-emerald-100 mb-4">KARV Philosophy</h3>
+                                        </div>
+                                        <p class="text-emerald-200/90 leading-relaxed">
+                                            The name KARV resonates with "Curve," symbolizing the upward trajectory of growth, progress, and transformation. We don't just provide services—we craft your success story.
+                                        </p>
+                                        <div class="mt-6 h-1 w-0 bg-gradient-to-r from-emerald-400 to-teal-400 group-hover:w-full transition-all duration-700"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="growth-philosophy-card motion-section" data-motion="scale-up" data-delay="0.2">
+                                    <div class="relative bg-gradient-to-br from-cyan-500/20 to-teal-600/10 backdrop-blur-xl rounded-3xl p-8 border border-cyan-400/30 hover:border-cyan-300/60 transition-all duration-500 group">
+                                        <div class="absolute top-4 right-4 w-12 h-12 bg-cyan-400/30 rounded-full flex items-center justify-center text-cyan-300 text-xl font-bold">
+                                            🎯
+                                        </div>
+                                        <div class="mb-6">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-4 group-hover:scale-110 transition-transform duration-300">
+                                                C
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-cyan-100 mb-4">Strategic Crafting</h3>
+                                        </div>
+                                        <p class="text-cyan-200/90 leading-relaxed">
+                                            Our "Crafting" approach streamlines processes, eliminates inefficiencies, and sculpts lean operations for maximum cost savings and operational excellence.
+                                        </p>
+                                        <div class="mt-6 h-1 w-0 bg-gradient-to-r from-cyan-400 to-emerald-400 group-hover:w-full transition-all duration-700"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="growth-philosophy-card motion-section" data-motion="scale-up" data-delay="0.4">
+                                    <div class="relative bg-gradient-to-br from-teal-500/20 to-emerald-600/10 backdrop-blur-xl rounded-3xl p-8 border border-teal-400/30 hover:border-teal-300/60 transition-all duration-500 group">
+                                        <div class="absolute top-4 right-4 w-12 h-12 bg-teal-400/30 rounded-full flex items-center justify-center text-teal-300 text-xl font-bold">
+                                            🚀
+                                        </div>
+                                        <div class="mb-6">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-4 group-hover:scale-110 transition-transform duration-300">
+                                                G
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-teal-100 mb-4">Growth Acceleration</h3>
+                                        </div>
+                                        <p class="text-teal-200/90 leading-relaxed">
+                                            We act as strategic connectors, forging pathways in the mineral sector and driving exponential growth through partnerships and market access.
+                                        </p>
+                                        <div class="mt-6 h-1 w-0 bg-gradient-to-r from-teal-400 to-emerald-400 group-hover:w-full transition-all duration-700"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Growth Journey Visualization -->
+                            <div class="relative mt-20">
+                                <div class="text-center mb-12">
+                                    <h3 class="text-3xl font-bold text-emerald-100 mb-4">Your Growth Journey</h3>
+                                    <p class="text-emerald-200/80 text-lg">Transforming challenges into opportunities</p>
+                                </div>
+                                
+                                <!-- Interactive Timeline -->
+                                <div class="relative max-w-4xl mx-auto">
+                                    <!-- Background line -->
+                                    <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-700 rounded-full"></div>
+                                    
+                                    <!-- Animated progress line -->
+                                    <div id="progress-line" class="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-emerald-400 via-cyan-400 to-teal-500 rounded-full transition-all duration-1000 ease-out" style="height: 0%; top: 0;"></div>
+                                    
+                                    <div class="space-y-24">
+                                        <!-- Step 1 -->
+                                        <div class="relative flex items-center growth-step" data-step="1">
+                                            <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-amber-400 rounded-full border-4 border-white shadow-lg flex items-center justify-center z-10">
+                                                <span class="text-white font-bold text-lg">1</span>
+                                            </div>
+                                            <div class="w-5/12 pr-8 text-right">
+                                                <h4 class="text-xl font-bold text-amber-300 mb-2">Strategic Assessment</h4>
+                                                <p class="text-amber-200/80">Comprehensive analysis of your current operations and growth potential</p>
+                                                <div class="mt-3 text-sm text-amber-300">Duration: 2-4 weeks</div>
+                                            </div>
+                                            <div class="w-2/12"></div>
+                                            <div class="w-5/12 pl-8">
+                                                <div class="bg-amber-500/20 backdrop-blur-sm rounded-lg p-4 border border-amber-400/30 hover:bg-amber-500/25 transition-all duration-300">
+                                                    <div class="text-amber-300 font-semibold mb-1">Discovery Phase</div>
+                                                    <div class="text-xs text-amber-200/70">Deep dive into your business ecosystem and market dynamics</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Step 2 -->
+                                        <div class="relative flex items-center growth-step" data-step="2">
+                                            <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-yellow-400 rounded-full border-4 border-white shadow-lg flex items-center justify-center z-10">
+                                                <span class="text-white font-bold text-lg">2</span>
+                                            </div>
+                                            <div class="w-5/12 pr-8 text-right">
+                                                <div class="bg-yellow-500/20 backdrop-blur-sm rounded-lg p-4 border border-yellow-400/30 hover:bg-yellow-500/25 transition-all duration-300">
+                                                    <div class="text-yellow-300 font-semibold mb-1">Design Phase</div>
+                                                    <div class="text-xs text-yellow-200/70">Custom roadmap with actionable milestones</div>
+                                                </div>
+                                            </div>
+                                            <div class="w-2/12"></div>
+                                            <div class="w-5/12 pl-8">
+                                                <h4 class="text-xl font-bold text-yellow-300 mb-2">Strategy Development</h4>
+                                                <p class="text-yellow-200/80">Tailored solutions designed for your specific challenges and objectives</p>
+                                                <div class="mt-3 text-sm text-yellow-300">Duration: 3-6 weeks</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Step 3 -->
+                                        <div class="relative flex items-center growth-step" data-step="3">
+                                            <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-amber-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center z-10">
+                                                <span class="text-white font-bold text-lg">3</span>
+                                            </div>
+                                            <div class="w-5/12 pr-8 text-right">
+                                                <h4 class="text-xl font-bold text-amber-300 mb-2">Implementation</h4>
+                                                <p class="text-amber-200/80">Phased execution with continuous monitoring and optimization</p>
+                                                <div class="mt-3 text-sm text-amber-300">Duration: 6-12 months</div>
+                                            </div>
+                                            <div class="w-2/12"></div>
+                                            <div class="w-5/12 pl-8">
+                                                <div class="bg-amber-500/20 backdrop-blur-sm rounded-lg p-4 border border-amber-400/30 hover:bg-amber-500/25 transition-all duration-300">
+                                                    <div class="text-amber-300 font-semibold mb-1">Execution Phase</div>
+                                                    <div class="text-xs text-amber-200/70">Real-time tracking with agile adjustments</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Step 4 -->
+                                        <div class="relative flex items-center growth-step" data-step="4">
+                                            <div class="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center z-10">
+                                                <span class="text-white font-bold text-lg">4</span>
+                                            </div>
+                                            <div class="w-5/12 pr-8 text-right">
+                                                <div class="bg-gradient-to-br from-amber-500/20 to-yellow-500/20 backdrop-blur-sm rounded-lg p-4 border border-amber-400/30 hover:bg-gradient-to-br hover:from-amber-500/25 hover:to-yellow-500/25 transition-all duration-300">
+                                                    <div class="text-amber-300 font-semibold mb-1">Growth Phase</div>
+                                                    <div class="text-xs text-amber-200/70">Continuous optimization and scaling</div>
+                                                </div>
+                                            </div>
+                                            <div class="w-2/12"></div>
+                                            <div class="w-5/12 pl-8">
+                                                <h4 class="text-xl font-bold bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text text-transparent mb-2">Sustained Success</h4>
+                                                <p class="text-amber-200/80">Long-term partnership ensuring exponential growth and market leadership</p>
+                                                <div class="mt-3 text-sm text-amber-300">Ongoing Support</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Core Values Section -->
+                    <div class="mb-32">
+                        <div class="text-center mb-16">
+                            <div class="motion-section" data-motion="zoom-in">
+                                <h3 class="font-heading text-4xl md:text-5xl font-black text-emerald-100 mb-8">
+                                    Our Core Values: GRIP
+                                </h3>
+                                <div class="w-32 h-1 mx-auto bg-gradient-to-r from-emerald-400 via-cyan-400 to-teal-300 rounded-full shadow-lg shadow-emerald-400/50"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="value-card motion-section" data-motion="scale-up" data-delay="0">
+                                <div class="value-icon">
+                                    <span class="text-white text-2xl font-bold">G</span>
+                                </div>
+                                <h4 class="font-heading text-xl font-black text-emerald-300 mb-4 text-center">Growth</h4>
+                                <p class="text-emerald-200/80 text-center">Driving measurable, sustainable progress for clients through innovative strategies.</p>
+                            </div>
+                            
+                            <div class="value-card motion-section" data-motion="scale-up" data-delay="0.2">
+                                <div class="value-icon">
+                                    <span class="text-white text-2xl font-bold">R</span>
+                                </div>
+                                <h4 class="font-heading text-xl font-black text-cyan-300 mb-4 text-center">Reliability & Integrity</h4>
+                                <p class="text-cyan-200/80 text-center">Ensuring seamless execution and fostering long-term partnerships built on trust.</p>
+                            </div>
+                            
+                            <div class="value-card motion-section" data-motion="scale-up" data-delay="0.4">
+                                <div class="value-icon">
+                                    <span class="text-white text-2xl font-bold">I</span>
+                                </div>
+                                <h4 class="font-heading text-xl font-black text-teal-300 mb-4 text-center">Innovation</h4>
+                                <p class="text-teal-200/80 text-center">Pioneering strategies in niche, high-impact sectors like rare earth magnets.</p>
+                            </div>
+                            
+                            <div class="value-card motion-section" data-motion="scale-up" data-delay="0.6">
+                                <div class="value-icon">
+                                    <span class="text-white text-2xl font-bold">P</span>
+                                </div>
+                                <h4 class="font-heading text-xl font-black text-emerald-300 mb-4 text-center">Precision & Excellence</h4>
+                                <p class="text-emerald-200/80 text-center">Crafting precise solutions for complex challenges across all domains.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Leadership Section -->
+                    <div class="text-center">
+                        <div class="motion-section" data-motion="fade-up">
+                            <h3 class="font-heading text-4xl md:text-5xl font-black text-emerald-100 mb-8">
+                                Industry Leadership & Excellence
+                            </h3>
+                            <div class="w-32 h-1 mx-auto bg-gradient-to-r from-emerald-400 via-cyan-400 to-teal-300 rounded-full shadow-lg shadow-emerald-400/50 mb-16"></div>
+                        </div>
+                        
+                        <!-- Founder Introduction -->
+                        <div class="max-w-6xl mx-auto mb-20">
+                            <div class="relative bg-gradient-to-br from-emerald-500/20 to-teal-600/10 backdrop-blur-xl rounded-3xl p-12 border border-emerald-400/30 overflow-hidden">
+                                <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-400/20 to-transparent rounded-full blur-3xl"></div>
+                                <div class="relative z-10">
+                                    <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                                        <div class="md:w-1/3 text-center">
+                                            <div class="w-32 h-32 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center text-white text-5xl font-bold mb-6 mx-auto shadow-2xl">
+                                                A
+                                            </div>
+                                            <h4 class="text-3xl font-bold text-emerald-100 mb-2">Amit Gautam</h4>
+                                            <p class="text-emerald-300 text-lg font-medium">Founder & Visionary Leader</p>
+                                            <div class="w-20 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 mx-auto mt-4 rounded-full"></div>
+                                        </div>
+                                        <div class="md:w-2/3 text-left">
+                                            <h5 class="text-2xl font-bold text-emerald-200 mb-6">27 Years of Techno-Commercial Excellence</h5>
+                                            <p class="text-emerald-200/90 text-lg leading-relaxed mb-6">
+                                                With nearly three decades of strategic leadership, Amit has pioneered transformative solutions across multiple industries, establishing KARV Group as a trusted partner for complex business challenges.
+                                            </p>
+                                            <div class="flex flex-wrap gap-3">
+                                                <span class="px-4 py-2 bg-emerald-400/20 rounded-full text-emerald-300 text-sm font-medium border border-emerald-400/30">Strategic Leadership</span>
+                                                <span class="px-4 py-2 bg-cyan-400/20 rounded-full text-cyan-300 text-sm font-medium border border-cyan-400/30">Industry Innovation</span>
+                                                <span class="px-4 py-2 bg-teal-400/20 rounded-full text-teal-300 text-sm font-medium border border-teal-400/30">Global Networks</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Expertise Areas -->
+                        <div class="max-w-7xl mx-auto mb-20">
+                            <h4 class="text-3xl font-bold text-emerald-100 mb-12">Core Expertise Areas</h4>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                                <!-- Port & Logistics Excellence -->
+                                <div class="group relative">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-teal-600/10 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                                    <div class="relative bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 backdrop-blur-xl rounded-3xl p-8 border border-emerald-400/30 hover:border-emerald-300/60 transition-all duration-500 group hover:transform hover:scale-105">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                            ⚓
+                                        </div>
+                                        <h5 class="text-xl font-bold text-emerald-100 mb-4">Port & Logistics Excellence</h5>
+                                        <p class="text-emerald-200/80 text-sm leading-relaxed">Deep expertise in port operations, logistics optimization, and supply chain management across diverse industrial sectors.</p>
+                                        <div class="mt-6 h-1 w-0 bg-gradient-to-r from-emerald-400 to-teal-400 group-hover:w-full transition-all duration-700"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Critical Minerals Leadership -->
+                                <div class="group relative">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-teal-600/10 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                                    <div class="relative bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 backdrop-blur-xl rounded-3xl p-8 border border-cyan-400/30 hover:border-cyan-300/60 transition-all duration-500 group hover:transform hover:scale-105">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                            💎
+                                        </div>
+                                        <h5 class="text-xl font-bold text-cyan-100 mb-4">Critical Minerals Leadership</h5>
+                                        <p class="text-cyan-200/80 text-sm leading-relaxed">Strategic positioning in the critical minerals value chain, focusing on rare earth elements and sustainable sourcing solutions.</p>
+                                        <div class="mt-6 h-1 w-0 bg-gradient-to-r from-cyan-400 to-emerald-400 group-hover:w-full transition-all duration-700"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Network Excellence -->
+                                <div class="group relative">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-teal-500/20 to-emerald-600/10 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                                    <div class="relative bg-gradient-to-br from-teal-500/20 to-teal-600/10 backdrop-blur-xl rounded-3xl p-8 border border-teal-400/30 hover:border-teal-300/60 transition-all duration-500 group hover:transform hover:scale-105">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                            🌐
+                                        </div>
+                                        <h5 class="text-xl font-bold text-teal-100 mb-4">Network Excellence</h5>
+                                        <p class="text-teal-200/80 text-sm leading-relaxed">Robust network and proven track record in securing high-value contracts across Indian and global markets.</p>
+                                        <div class="mt-6 h-1 w-0 bg-gradient-to-r from-teal-400 to-emerald-400 group-hover:w-full transition-all duration-700"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Industry Experience -->
+                                <div class="group relative">
+                                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-cyan-600/10 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                                    <div class="relative bg-gradient-to-br from-emerald-500/20 to-cyan-600/10 backdrop-blur-xl rounded-3xl p-8 border border-emerald-400/30 hover:border-emerald-300/60 transition-all duration-500 group hover:transform hover:scale-105">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                            🏢
+                                        </div>
+                                        <h5 class="text-xl font-bold text-emerald-100 mb-4">Industry Experience</h5>
+                                        <p class="text-emerald-200/80 text-sm leading-relaxed">Led by Amit's extensive experience with industry giants like Adani Group, Aditya Birla Group, and Essar Oil.</p>
+                                        <div class="mt-6 h-1 w-0 bg-gradient-to-r from-emerald-400 to-cyan-400 group-hover:w-full transition-all duration-700"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mission Statement -->
+                        <div class="max-w-5xl mx-auto mb-20">
+                            <div class="relative bg-gradient-to-br from-emerald-500/15 to-teal-600/10 backdrop-blur-xl rounded-3xl p-10 border border-emerald-400/30">
+                                <div class="absolute top-4 left-4 text-emerald-400 text-6xl font-light opacity-50">"</div>
+                                <div class="pt-8">
+                                    <p class="text-2xl font-light leading-relaxed text-emerald-100 italic text-center">
+                                        Our expertise fosters business growth and expansion, provides strategic consultancy and expertly navigates complex regulatory landscapes in Port operations and Critical Minerals.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="testimonials" class="py-20 md:py-32 bg-white text-black relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(255,193,7,0.15),transparent_50%)]"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(33,150,243,0.1),transparent_50%)]"></div>
+                
+                <!-- Animated Background Elements -->
+                <div class="absolute top-10 left-10 w-32 h-32 bg-accent-gold/10 rounded-full blur-xl animate-pulse"></div>
+                <div class="absolute bottom-10 right-10 w-40 h-40 bg-secondary-blue/10 rounded-full blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+                <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-accent-gold/10 rounded-full blur-xl animate-pulse" style="animation-delay: 2s;"></div>
+                
+                <div class="container mx-auto px-6 text-center relative z-10">
+                    <div class="mb-20">
+                        <h2 class="font-heading text-5xl md:text-7xl font-black mb-8 epic-title">
+                            <span class="text-black">
+                                Voices of Our Success Curve
+                            </span>
+                        </h2>
+                        <div class="w-32 h-1 bg-gradient-to-r from-accent-green to-blue-400 mx-auto rounded-full mb-8"></div>
+                        <p class="text-xl md:text-2xl text-black max-w-4xl mx-auto leading-relaxed opacity-90">
+                            Discover how KARV Group transforms businesses through innovative partnerships and strategic excellence
+                        </p>
+                    </div>
+                    
+                    <!-- Client Testimonial Card -->
+                    <div class="max-w-5xl mx-auto mb-20">
+                        <div class="premium-testimonial-card relative">
+                            <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl rounded-3xl"></div>
+                            <div class="absolute inset-0 bg-gradient-to-br from-accent-green/20 to-transparent rounded-3xl opacity-30"></div>
+                            <div class="relative p-12 md:p-16">
+                                <div class="absolute top-8 left-8 text-accent-green text-8xl font-light opacity-50">"</div>
+                                <div class="pt-12">
+                                    <p class="text-2xl md:text-3xl font-light leading-relaxed text-black mb-8 italic">
+                                        "We have been associated with KARV Group for over 2 years now and we have never been disappointed. They have always delivered beyond expectations."
+                                    </p>
+                                    <div class="flex items-center justify-center space-x-4">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-accent-green to-blue-400 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                                            T
+                                        </div>
+                                        <div class="text-left">
+                                            <h4 class="text-2xl font-bold text-black">Tarun Anand</h4>
+                                            <p class="text-accent-green font-medium">Director, Tranworld Furtichem</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Professional Endorsements */
+                    <div class="mb-16">
+                        <h3 class="text-3xl md:text-4xl font-bold text-black mb-4">Professional Network</h3>
+                        <p class="text-black text-lg opacity-80">Trusted by industry leaders across the globe</p>
+                    </div>
+                </div>
+                
+                <!-- Floating Testimonial Cards -->
+                <div class="relative overflow-hidden">
+                    <div class="flex space-x-8 testimonial-slider">
+                        <div class="flex-shrink-0 testimonial-float-card">
+                            <div class="w-80 p-8 bg-white backdrop-blur-lg rounded-2xl border border-gray-200">
+                                <div class="text-accent-green text-4xl mb-4">"</div>
+                                <p class="text-black mb-6 leading-relaxed">The team at KARV demonstrates unparalleled professionalism and expertise. Their contributions have been transformative for our operations.</p>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">A</div>
+                                    <div>
+                                        <h4 class="text-black font-semibold">Adrian de Souza</h4>
+                                        <p class="text-black text-sm opacity-80">Industry Professional</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-shrink-0 testimonial-float-card">
+                            <div class="w-80 p-8 bg-white backdrop-blur-lg rounded-2xl border border-gray-200">
+                                <div class="text-accent-green text-4xl mb-4">"</div>
+                                <p class="text-black mb-6 leading-relaxed">Working with KARV has been exceptional. Their deep industry knowledge and strategic insights are game-changers for complex logistics challenges.</p>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">N</div>
+                                    <div>
+                                        <h4 class="text-black font-semibold">Neeraj Ross</h4>
+                                        <p class="text-black text-sm opacity-80">LinkedIn Professional</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-shrink-0 testimonial-float-card">
+                            <div class="w-80 p-8 bg-white backdrop-blur-lg rounded-2xl border border-gray-200">
+                                <div class="text-accent-green text-4xl mb-4">"</div>
+                                <p class="text-black mb-6 leading-relaxed">KARV Group's approach to critical minerals consulting is innovative and results-driven. Highly recommended for strategic partnerships.</p>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">P</div>
+                                    <div>
+                                        <h4 class="text-black font-semibold">Pulak Mukherjee</h4>
+                                        <p class="text-black text-sm opacity-80">LinkedIn Professional</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Duplicate set for seamless loop -->
+                        <div class="flex-shrink-0 testimonial-float-card">
+                            <div class="w-80 p-8 bg-white backdrop-blur-lg rounded-2xl border border-gray-200">
+                                <div class="text-accent-green text-4xl mb-4">"</div>
+                                <p class="text-black mb-6 leading-relaxed">The team at KARV demonstrates unparalleled professionalism and expertise. Their contributions have been transformative for our operations.</p>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">A</div>
+                                    <div>
+                                        <h4 class="text-black font-semibold">Adrian de Souza</h4>
+                                        <p class="text-black text-sm opacity-80">Industry Professional</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-shrink-0 testimonial-float-card">
+                            <div class="w-80 p-8 bg-white backdrop-blur-lg rounded-2xl border border-gray-200">
+                                <div class="text-accent-green text-4xl mb-4">"</div>
+                                <p class="text-black mb-6 leading-relaxed">Working with KARV has been exceptional. Their deep industry knowledge and strategic insights are game-changers for complex logistics challenges.</p>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">N</div>
+                                    <div>
+                                        <h4 class="text-black font-semibold">Neeraj Ross</h4>
+                                        <p class="text-black text-sm opacity-80">LinkedIn Professional</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="contact" class="py-20 md:py-32 bg-white text-black relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,193,7,0.15),transparent_70%)]"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(33,150,243,0.1),transparent_70%)]"></div>
+                
+                <!-- Floating Elements -->
+                <div class="absolute top-20 left-20 w-24 h-24 bg-accent-gold/20 rounded-full blur-xl animate-pulse"></div>
+                <div class="absolute bottom-20 right-20 w-32 h-32 bg-secondary-blue/20 rounded-full blur-xl animate-pulse" style="animation-delay: 1.5s;"></div>
+                <div class="absolute top-1/3 right-1/4 w-16 h-16 bg-accent-gold/20 rounded-full blur-xl animate-pulse" style="animation-delay: 3s;"></div>
+                
+                <div class="container mx-auto px-6 text-center relative z-10">
+                    <div class="max-w-5xl mx-auto">
+                        <h2 class="font-heading text-5xl md:text-7xl font-black mb-8">
+                            <span class="text-black">
+                                Ready to Craft Your Growth Curve?
+                            </span>
+                        </h2>
+                        
+                        <div class="w-32 h-1 bg-gradient-to-r from-accent-gold to-secondary-blue mx-auto rounded-full mb-12"></div>
+                        
+                        <p class="text-xl md:text-2xl max-w-4xl mx-auto opacity-90 mb-16 leading-relaxed text-black">
+                            Transform your business with KARV Group's expertise in logistics, port operations, and critical minerals value chain. Let's begin your success story today.
+                        </p>
+                        
+                        <!-- Enhanced CTA Section -->
+                        <div class="relative inline-block">
+                            <div class="absolute inset-0 bg-gradient-to-r from-accent-gold/30 to-secondary-blue/30 rounded-full blur-2xl scale-110"></div>
+                            <a href="mailto:amitgautam@karv-group.com" class="relative inline-flex items-center justify-center bg-gradient-to-r from-accent-gold to-yellow-500 text-primary-blue font-black text-xl py-6 px-12 rounded-full shadow-2xl border-2 border-white/20 backdrop-blur-sm overflow-hidden group transition-all duration-500 hover:scale-105 hover:shadow-3xl">
+                                <span class="relative z-10 flex items-center space-x-3">
+                                    <span>Start Your Growth Journey</span>
+                                    <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                    </svg>
+                                </span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-accent-gold opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="absolute -inset-1 bg-gradient-to-r from-accent-gold to-yellow-500 rounded-full blur opacity-30 group-hover:opacity-70 transition duration-1000"></div>
+                            </a>
+                        </div>
+                        
+                        <!-- Contact Information -->
+                        <div class="mt-16 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                            <div class="contact-info-card">
+                                <div class="bg-gray-100 backdrop-blur-lg rounded-2xl p-6 border border-gray-200 hover:bg-gray-200 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-accent-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg class="w-6 h-6 text-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-black font-semibold mb-2">Email</h3>
+                                    <p class="text-black text-sm opacity-80">amitgautam@karv-group.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-info-card">
+                                <div class="bg-gray-100 backdrop-blur-lg rounded-2xl p-6 border border-gray-200 hover:bg-gray-200 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-blue-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-black font-semibold mb-2">Phone</h3>
+                                    <p class="text-black text-sm opacity-80">+91 9892 555 565</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-info-card">
+                                <div class="bg-gray-100 backdrop-blur-lg rounded-2xl p-6 border border-gray-200 hover:bg-gray-200 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-purple-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-black font-semibold mb-2">Location</h3>
+                                    <p class="text-black text-sm opacity-80">Mumbai, India</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Contact Details -->
+                        <div class="mt-12 bg-gray-50 p-8 rounded-3xl border border-gray-200">
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h3 class="text-xl font-bold text-primary-blue mb-4">KARV Enterprises</h3>
+                                    <div class="space-y-2 text-black">
+                                        <p><strong>Owner:</strong> Ruchita Gautam</p>
+                                        <p><strong>Management Lead:</strong> Amit Gautam</p>
+                                        <p><strong>Focus:</strong> Port Operations & Logistics</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-accent-gold mb-4">KARV Consultancy Services</h3>
+                                    <div class="space-y-2 text-black">
+                                        <p><strong>Specialization:</strong> Critical Minerals & REPM</p>
+                                        <p><strong>Services:</strong> Strategic Consulting</p>
+                                        <p><strong>Focus:</strong> Government Contracts & Value Chain</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gradient-to-br from-primary-blue via-secondary-blue to-deep-navy text-white py-16 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_25%_75%,rgba(255,193,7,0.1),transparent_50%)]"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_75%_25%,rgba(33,150,243,0.08),transparent_50%)]"></div>
+            
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="grid md:grid-cols-4 gap-8 mb-12">
+                    <!-- Company Info -->
+                    <div class="md:col-span-2">
+                        <div class="mb-6">
+                            <h3 class="font-heading text-3xl font-black mb-3">KARV Group</h3>
+                            <p class="text-gray-300 leading-relaxed">Crafting your Growth CURVE through expertise in Port Operations, Freight Forwarding, and Critical Minerals value chain.</p>
+                        </div>
+                        <div class="flex space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-accent-green to-emerald-400 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                K
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <p>Port Operations | Freight Forwarding</p>
+                                <p>Critical Minerals & REPM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="font-heading text-xl font-bold mb-4 text-accent-green">Quick Links</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#home" class="text-gray-300 hover:text-accent-green transition-colors">Home</a></li>
+                            <li><a href="#services" class="text-gray-300 hover:text-accent-green transition-colors">Services</a></li>
+                            <li><a href="#process" class="text-gray-300 hover:text-accent-green transition-colors">About</a></li>
+                            <li><a href="#testimonials" class="text-gray-300 hover:text-accent-green transition-colors">Testimonials</a></li>
+                            <li><a href="#contact" class="text-gray-300 hover:text-accent-green transition-colors">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div>
+                        <h4 class="font-heading text-xl font-bold mb-4 text-accent-green">Get In Touch</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-accent-green/20 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <a href="mailto:amitgautam@karv-group.com" class="text-gray-300 hover:text-accent-green transition-colors text-sm">amitgautam@karv-group.com</a>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-blue-400/20 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 00-2 2H8a2 2 0 00-2-2V6m8 0h2a2 2 0 012 2v6.5"/>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-300 text-sm">Excellence in Logistics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom Bar -->
+                <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm mb-4 md:mb-0 font-body">&copy; 2025 KARV Group. All Rights Reserved. Crafting Growth Curves Worldwide.</p>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-400 text-sm font-body">Powered by Excellence</span>
+                        <div class="w-2 h-2 bg-accent-gold rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    
+    <script>
+        // === WORLD-CLASS ANIMATION SYSTEM ===
+        
+        // 1. QUANTUM FLOATING ANIMATION
+        gsap.to('.floating-element', {
+            y: '-20px',
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: 'power2.inOut',
+            stagger: 0.3
+        });
+
+        // 2. EPIC TITLE QUANTUM REVEAL
+        gsap.from('.epic-title', {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1.5,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+                trigger: '.epic-title',
+                start: 'top 80%'
+            }
+        });
+
+        // 3. FLOATING TEXT ANIMATIONS
+        gsap.from('.floating-text', {
+            y: 50,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: '.floating-text',
+                start: 'top 85%'
+            }
+        });
+
+        // 4. QUANTUM TEXT GLITCH EFFECT
+        document.querySelectorAll('.quantum-text').forEach(el => {
+            const text = el.getAttribute('data-text');
+            el.addEventListener('mouseenter', () => {
+                let iterations = 0;
+                const glitchChars = '!@#$%^&*()_+{}|:<>?[];,./~`';
+                
+                const interval = setInterval(() => {
+                    el.textContent = text.split('').map((char, index) => {
+                        if (index < iterations) return text[index];
+                        return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                    }).join('');
+                    
+                    if (iterations >= text.length) clearInterval(interval);
+                    iterations += 1/3;
+                }, 30);
+            });
+        });
+
+        // 5. MAGNETIC CARD EFFECTS
+        document.querySelectorAll('.magnetic-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                gsap.to(card, {
+                    x: x * 0.1,
+                    y: y * 0.1,
+                    rotationX: y * 0.05,
+                    rotationY: x * 0.05,
+                    scale: 1.05,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    x: 0,
+                    y: 0,
+                    rotationX: 0,
+                    rotationY: 0,
+                    scale: 1,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // 6. MAGNETIC BUTTON EFFECTS
+        document.querySelectorAll('.magnetic-button').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                gsap.to(btn, {
+                    x: x * 0.2,
+                    y: y * 0.2,
+                    scale: 1.1,
+                    duration: 0.3
+                });
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.5
+                });
+            });
+        });
+
+        // 7. ENHANCED TESTIMONIAL ANIMATIONS
+        gsap.to('.testimonial-slider', {
+            x: '-50%',
+            duration: 25,
+            repeat: -1,
+            ease: 'none'
+        });
+        
+        // Add floating animation to testimonial cards
+        gsap.utils.toArray('.testimonial-float-card').forEach((card, index) => {
+            gsap.to(card, {
+                y: '-10px',
+                duration: 3 + index * 0.5,
+                repeat: -1,
+                yoyo: true,
+                ease: 'power2.inOut',
+                delay: index * 0.5
+            });
+        });
+        
+        // Premium testimonial card hover effect
+        document.querySelectorAll('.premium-testimonial-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    scale: 1.02,
+                    y: -10,
+                    duration: 0.4,
+                    ease: 'power2.out'
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    scale: 1,
+                    y: 0,
+                    duration: 0.4,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // 8. GROWTH PHILOSOPHY CARD INTERACTIONS
+        document.querySelectorAll('.growth-philosophy-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    y: -8,
+                    scale: 1.02,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+                
+                // Animate progress bar
+                const progressBar = card.querySelector('.h-1');
+                if (progressBar) {
+                    gsap.to(progressBar, {
+                        width: '100%',
+                        duration: 0.7,
+                        ease: 'power2.out'
+                    });
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    y: 0,
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+                
+                const progressBar = card.querySelector('.h-1');
+                if (progressBar) {
+                    gsap.to(progressBar, {
+                        width: '0%',
+                        duration: 0.5,
+                        ease: 'power2.out'
+                    });
+                }
+            });
+        });
+        
+        // 9. GROWTH STEP TIMELINE ANIMATION
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const stepObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const step = entry.target;
+                    gsap.fromTo(step,
+                        { opacity: 0, y: 30 },
+                        { 
+                            opacity: 1, 
+                            y: 0, 
+                            duration: 0.8,
+                            ease: 'power3.out',
+                            delay: parseInt(step.dataset.step) * 0.2
+                        }
+                    );
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.growth-step').forEach(step => {
+            stepObserver.observe(step);
+        });
+
+        // 10. AVATAR MAGIC HOVER
+        document.querySelectorAll('.avatar-magic').forEach(avatar => {
+            avatar.addEventListener('mouseenter', () => {
+                gsap.to(avatar, {
+                    scale: 1.2,
+                    rotation: 360,
+                    duration: 0.6,
+                    ease: 'back.out(1.7)'
+                });
+            });
+            
+            avatar.addEventListener('mouseleave', () => {
+                gsap.to(avatar, {
+                    scale: 1,
+                    rotation: 0,
+                    duration: 0.4
+                });
+            });
+        });
+
+        // 9. FLOATING QUOTES ANIMATION
+        gsap.from('.floating-quote', {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: '.floating-quote',
+                start: 'top 90%'
+            }
+        });
+
+        // 10. CURSOR TRAIL MAGIC
+        let cursor = document.querySelector('.cursor-trail');
+        let cursorInner = document.querySelector('.cursor-trail-inner');
+        
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1
+            });
+            
+            gsap.to(cursorInner, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.3
+            });
+        });
+
+        // 11. PARALLAX SCROLL EFFECTS
+        gsap.to('.parallax-bg', {
+            yPercent: -50,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.parallax-bg',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        // 12. SCROLL INDICATOR & NAVBAR MAGIC
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.scroll-indicator').style.width = scrolled + '%';
+            
+            // Enhanced Navbar Background on Scroll
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.style.backgroundColor = 'rgba(15, 23, 42, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+                navbar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
+            } else {
+                navbar.style.backgroundColor = 'transparent';
+                navbar.style.backdropFilter = 'none';
+                navbar.style.borderBottom = 'none';
+            }
+        });
+
+        // 13. QUANTUM CONTAINER ENTRANCE
+        gsap.from('.quantum-container', {
+            scale: 0.9,
+            opacity: 0,
+            duration: 1.5,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.quantum-container',
+                start: 'top 80%'
+            }
+        });
+
+        // 14. PREMIUM VALUE ICONS ROTATION
+        document.querySelectorAll('.premium-value-icon').forEach(icon => {
+            gsap.set(icon, { perspective: 1000 });
+            
+            icon.addEventListener('mouseenter', () => {
+                gsap.to(icon, {
+                    rotationY: 180,
+                    duration: 0.6,
+                    ease: 'power2.out'
+                });
+            });
+            
+            icon.addEventListener('mouseleave', () => {
+                gsap.to(icon, {
+                    rotationY: 0,
+                    duration: 0.6,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // 15. GLASS CARD ENTRANCE ANIMATIONS
+        gsap.from('.glass-card', {
+            y: 100,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.glass-card',
+                start: 'top 85%'
+            }
+        });
+
+        // 16. GLOW TEXT PULSING
+        gsap.to('.glow-text', {
+            textShadow: '0 0 20px rgba(34, 197, 94, 0.8), 0 0 40px rgba(34, 197, 94, 0.6)',
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: 'power2.inOut'
+        });
+
+        // 17. HOVER GLOW EFFECTS
+        document.querySelectorAll('.hover-glow').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(el, {
+                    boxShadow: '0 20px 40px rgba(34, 197, 94, 0.3)',
+                    duration: 0.3
+                });
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, {
+                    boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)',
+                    duration: 0.3
+                });
+            });
+        });
+
+        // 18. GRADIENT TEXT SHIMMER EFFECT
+        document.querySelectorAll('.gradient-text').forEach(text => {
+            const shimmer = () => {
+                gsap.to(text, {
+                    backgroundPosition: '200% center',
+                    duration: 2,
+                    ease: 'power2.inOut',
+                    onComplete: shimmer
+                });
+            };
+            shimmer();
+        });
+
+        // 19. QUANTUM BUTTON PULSE
+        gsap.to('.quantum-button', {
+            scale: 1.05,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: 'power2.inOut'
+        });
+
+        // 20. DRIFT PATTERN ANIMATION
+        gsap.to('.bg-drift-pattern', {
+            backgroundPosition: '100px 100px',
+            duration: 20,
+            repeat: -1,
+            ease: 'none'
+        });
+
+        // 21. REVEAL ANIMATIONS ON SCROLL
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.utils.toArray('.reveal-on-scroll').forEach(element => {
+            gsap.from(element, {
+                y: 60,
+                opacity: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: element,
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+        });
+
+        // 22. SMOOTH SCROLLING & MOBILE MENU
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                    
+                    gsap.to(window, {
+                        duration: 1.5,
+                        scrollTo: {
+                            y: target,
+                            offsetY: 80 // Account for fixed navbar
+                        },
+                        ease: 'power2.inOut'
+                    });
+                }
+            });
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                
+                // Animate menu appearance
+                if (!mobileMenu.classList.contains('hidden')) {
+                    gsap.fromTo(mobileMenu, 
+                        { opacity: 0, y: -20 },
+                        { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
+                    );
+                }
+            });
+        }
+        
+        // Navigation Active State Handler
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+        
+        const updateActiveNav = () => {
+            const scrollPosition = window.scrollY + 100;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav(); // Initial call
+
+        // 23. PARTICLE SYSTEM INITIALIZATION
+        const initParticles = () => {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '1';
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    alpha: Math.random() * 0.5
+                });
+            }
+            
+            const animate = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(particle => {
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+                    if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, 1, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(34, 197, 94, ${particle.alpha})`;
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animate);
+            };
+            animate();
+        };
+        
+        initParticles();
+
+        // 24. ENHANCED CONTACT SECTION ANIMATIONS
+        gsap.utils.toArray('.contact-info-card').forEach((card, index) => {
+            // Floating animation
+            gsap.to(card, {
+                y: -5,
+                duration: 2 + index * 0.3,
+                repeat: -1,
+                yoyo: true,
+                ease: 'power2.inOut',
+                delay: index * 0.2
+            });
+            
+            // Hover interactions
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    y: -10,
+                    scale: 1.05,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    y: -5,
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+        
+        // Enhanced CTA button interaction
+        const ctaButton = document.querySelector('a[href="mailto:amitgautam@karv-group.com"]');
+        if (ctaButton) {
+            ctaButton.addEventListener('mouseenter', () => {
+                gsap.to(ctaButton, {
+                    scale: 1.08,
+                    y: -2,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            ctaButton.addEventListener('mouseleave', () => {
+                gsap.to(ctaButton, {
+                    scale: 1,
+                    y: 0,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        }
+
+        // 25. FINAL MAGIC - DYNAMIC BACKGROUND BREATHING
+        gsap.to('body', {
+            backgroundColor: '#fafafa',
+            duration: 8,
+            repeat: -1,
+            yoyo: true,
+            ease: 'power1.inOut'
+        });
+
+        console.log('🚀 KARV Group - World-Class Animation System Activated! 🚀');
+        console.log('✨ Featuring: Quantum Effects, Glass-morphism, Magnetic Interactions, Parallax Magic, and more! ✨');
+        
+        // HERO 3D CANVAS INITIALIZATION
+        const initHeroCanvas = () => {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
+            
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            
+            // Create floating particles
+            const particleCount = 100;
+            const particles = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 20;
+                positions[i + 1] = (Math.random() - 0.5) * 20;
+                positions[i + 2] = (Math.random() - 0.5) * 20;
+                
+                colors[i] = 0;
+                colors[i + 1] = 0.8;
+                colors[i + 2] = 0.64;
+            }
+            
+            particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const particleMaterial = new THREE.PointsMaterial({
+                size: 0.05,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const particleSystem = new THREE.Points(particles, particleMaterial);
+            scene.add(particleSystem);
+            
+            camera.position.z = 5;
+            
+            const animate = () => {
+                requestAnimationFrame(animate);
+                
+                particleSystem.rotation.y += 0.001;
+                particleSystem.rotation.x += 0.0005;
+                
+                const positions = particleSystem.geometry.attributes.position.array;
+                for (let i = 1; i < positions.length; i += 3) {
+                    positions[i] += Math.sin(Date.now() * 0.001 + i) * 0.0001;
+                }
+                particleSystem.geometry.attributes.position.needsUpdate = true;
+                
+                renderer.render(scene, camera);
+            };
+            
+            animate();
+            
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+        
+        // Initialize 3D hero after everything loads
+        setTimeout(initHeroCanvas, 1000);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const particlesGeometry = new THREE.BufferGeometry;
+            const particlesCount = 5000;
+            const posArray = new Float32Array(particlesCount * 3);
+            for(let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 5;
+            }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.005,
+                color: '#00cca3'
+            });
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+            camera.position.z = 2;
+
+            let mouseX = 0;
+            let mouseY = 0;
+            document.addEventListener('mousemove', (event) => {
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+            });
+
+            const clock = new THREE.Clock();
+            const animate = () => {
+                const elapsedTime = clock.getElapsedTime();
+                particlesMesh.rotation.y = -0.1 * elapsedTime;
+                if (mouseX > 0) {
+                    particlesMesh.rotation.x = -mouseY * (elapsedTime * 0.00008);
+                    particlesMesh.rotation.y += -mouseX * (elapsedTime * 0.00008);
+                }
+                renderer.render(scene, camera);
+                window.requestAnimationFrame(animate);
+            };
+            animate();
+            
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            });
+
+            gsap.from('.clip-reveal', {
+                y: 100,
+                opacity: 0,
+                stagger: 0.2,
+                duration: 1.5,
+                ease: 'power4.out',
+                delay: 0.5
+            });
+
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const rotateX = (y / rect.height - 0.5) * -20;
+                    const rotateY = (x / rect.width - 0.5) * 20;
+                    gsap.to(card, {
+                        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`,
+                        duration: 0.5,
+                        ease: 'power2.out'
+                    });
+                });
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        transform: 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)',
+                        duration: 0.5,
+                        ease: 'power2.out'
+                    });
+                });
+            });
+
+            gsap.to(".timeline-progress", {
+                height: "100%",
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: ".process-timeline",
+                    start: "top center",
+                    end: "bottom center",
+                    scrub: true
+                }
+            });
+
+            gsap.utils.toArray('.timeline-item').forEach(item => {
+                gsap.fromTo(item, 
+                    { opacity: 0, y: 50 },
+                    { 
+                        opacity: 1, 
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: item,
+                            start: 'top 80%',
+                            toggleActions: 'play none none none',
+                        }
+                    }
+                );
+            });
+
+            // Enhanced animations for the new sections
+            gsap.utils.toArray('.fade-in-up').forEach((element, index) => {
+                gsap.fromTo(element, 
+                    { opacity: 0, y: 50 },
+                    { 
+                        opacity: 1, 
+                        y: 0,
+                        duration: 1,
+                        ease: 'power3.out',
+                        delay: index * 0.1,
+                        scrollTrigger: {
+                            trigger: element,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none',
+                        }
+                    }
+                );
+            });
+
+            // Framer Motion-like animations using GSAP
+            const { motion } = window.Motion || {};
+            
+            // Enhanced motion animations
+            const motionElements = document.querySelectorAll('.motion-section');
+            
+            motionElements.forEach((element, index) => {
+                const motionType = element.getAttribute('data-motion');
+                const delay = parseFloat(element.getAttribute('data-delay')) || index * 0.1;
+                
+                let fromVars = {};
+                let toVars = {
+                    duration: 1.2,
+                    ease: 'power3.out',
+                    delay: delay,
+                    scrollTrigger: {
+                        trigger: element,
+                        start: 'top 85%',
+                        toggleActions: 'play none none none',
+                    }
+                };
+                
+                switch(motionType) {
+                    case 'fade-up':
+                        fromVars = { opacity: 0, y: 60 };
+                        toVars = { ...toVars, opacity: 1, y: 0 };
+                        break;
+                    case 'slide-left':
+                        fromVars = { opacity: 0, x: -80 };
+                        toVars = { ...toVars, opacity: 1, x: 0 };
+                        break;
+                    case 'slide-right':
+                        fromVars = { opacity: 0, x: 80 };
+                        toVars = { ...toVars, opacity: 1, x: 0 };
+                        break;
+                    case 'zoom-in':
+                        fromVars = { opacity: 0, scale: 0.8 };
+                        toVars = { ...toVars, opacity: 1, scale: 1 };
+                        break;
+                    case 'scale-up':
+                        fromVars = { opacity: 0, scale: 0.9, y: 30 };
+                        toVars = { ...toVars, opacity: 1, scale: 1, y: 0, ease: 'back.out(1.7)' };
+                        break;
+                    default:
+                        fromVars = { opacity: 0, y: 30 };
+                        toVars = { ...toVars, opacity: 1, y: 0 };
+                }
+                
+                gsap.fromTo(element, fromVars, toVars);
+            });
+
+            // Stagger animations for value cards and leadership cards
+            gsap.utils.toArray('.stagger-animation').forEach((element, index) => {
+                gsap.fromTo(element, 
+                    { opacity: 0, y: 30, scale: 0.95 },
+                    { 
+                        opacity: 1, 
+                        y: 0,
+                        scale: 1,
+                        duration: 0.8,
+                        ease: 'back.out(1.7)',
+                        delay: index * 0.15,
+                        scrollTrigger: {
+                            trigger: element,
+                            start: 'top 80%',
+                            toggleActions: 'play none none none',
+                        }
+                    }
+                );
+            });
+
+            // Section divider animations
+            gsap.utils.toArray('.section-divider').forEach(divider => {
+                gsap.fromTo(divider, 
+                    { scaleX: 0, opacity: 0 },
+                    { 
+                        scaleX: 1,
+                        opacity: 1,
+                        duration: 1.5,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: divider,
+                            start: 'top 90%',
+                            toggleActions: 'play none none none',
+                        }
+                    }
+                );
+            });
+
+            // Enhanced hover effects for leadership cards
+            gsap.utils.toArray('.leadership-card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, {
+                        scale: 1.05,
+                        rotationY: 8,
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                    
+                    // Animate avatar
+                    const avatar = card.querySelector('.avatar-circle');
+                    if (avatar) {
+                        gsap.to(avatar, {
+                            scale: 1.2,
+                            rotation: 360,
+                            duration: 0.6,
+                            ease: 'power2.out'
+                        });
+                    }
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        scale: 1,
+                        rotationY: 0,
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                    
+                    const avatar = card.querySelector('.avatar-circle');
+                    if (avatar) {
+                        gsap.to(avatar, {
+                            scale: 1,
+                            rotation: 0,
+                            duration: 0.6,
+                            ease: 'power2.out'
+                        });
+                    }
+                });
+            });
+
+            // Value cards hover effects with enhanced animations
+            gsap.utils.toArray('.value-card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, {
+                        scale: 1.05,
+                        y: -8,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                    
+                    const icon = card.querySelector('.value-icon');
+                    if (icon) {
+                        gsap.to(icon, {
+                            scale: 1.2,
+                            rotation: 360,
+                            duration: 0.6,
+                            ease: 'back.out(1.7)'
+                        });
+                    }
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        scale: 1,
+                        y: 0,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                    
+                    const icon = card.querySelector('.value-icon');
+                    if (icon) {
+                        gsap.to(icon, {
+                            scale: 1,
+                            rotation: 0,
+                            duration: 0.6,
+                            ease: 'power2.out'
+                        });
+                    }
+                });
+            });
+
+            // Gradient text animations
+            gsap.utils.toArray('.gradient-text').forEach(text => {
+                gsap.fromTo(text, 
+                    { backgroundPosition: '200% center' },
+                    { 
+                        backgroundPosition: '0% center',
+                        duration: 2,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: text,
+                            start: 'top 80%',
+                            toggleActions: 'play none none none',
+                        }
+                    }
+                );
+            });
+
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.backgroundColor = 'rgba(20, 33, 61, 0.8)';
+                    navbar.style.backdropFilter = 'blur(10px)';
+                } else {
+                    navbar.style.backgroundColor = 'transparent';
+                    navbar.style.backdropFilter = 'none';
+                }
+                
+                // Update growth journey progress line
+                updateProgressLine();
+            });
+            
+            // Animated Growth Journey Progress Line
+            function updateProgressLine() {
+                const progressLine = document.getElementById('progress-line');
+                const steps = document.querySelectorAll('.growth-step');
+                const processSection = document.querySelector('#process');
+                
+                if (!progressLine || !processSection) return;
+                
+                const processSectionRect = processSection.getBoundingClientRect();
+                const journeySection = document.querySelector('#process .relative.mt-20');
+                
+                if (!journeySection) return;
+                
+                const journeySectionRect = journeySection.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                // Calculate scroll progress for the journey section
+                const sectionTop = journeySectionRect.top;
+                const sectionHeight = journeySectionRect.height;
+                const scrollProgress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (sectionHeight + windowHeight)));
+                
+                // Update progress line height
+                const progressHeight = scrollProgress * 100;
+                progressLine.style.height = `${Math.min(progressHeight, 100)}%`;
+                
+                // Animate steps as they come into view
+                steps.forEach((step, index) => {
+                    const stepRect = step.getBoundingClientRect();
+                    const stepProgress = (windowHeight - stepRect.top) / windowHeight;
+                    
+                    if (stepProgress > 0.3) {
+                        step.style.opacity = '1';
+                        step.style.transform = 'translateY(0)';
+                        step.style.transition = 'all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                    } else {
+                        step.style.opacity = '0';
+                        step.style.transform = 'translateY(50px)';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
